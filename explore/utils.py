@@ -7,6 +7,14 @@ from sklearn.preprocessing import OrdinalEncoder, StandardScaler, OneHotEncoder
 
 
 def clean_noisy_data(dataset,classes = 2):
+    """
+    Clean the data with replacing the miss-filled values by the correct ones and defining the right types for the dataset
+    variables.
+    
+    Input : The dataset to clean
+    Output : Cleaned dataset
+    
+    """
     
     if 'id' in dataset.columns :
         dataset = dataset.drop(columns = ['id']) # Drop id column as it's not relevent for predictions
@@ -45,8 +53,15 @@ def clean_noisy_data(dataset,classes = 2):
     dataset[numerical_columns] = dataset[numerical_columns].astype(float)
     return dataset
 
-#Function to detect the type of the variables numerical or categorial
+
 def detect_type(data):
+    """
+    Detecting the type of the variables numerical or categorical
+    
+    Input : Dataset 
+    Output : Lists of numerical variables and categorial ones
+    """
+    
     num_variables = []
     categ_variables = []
     columns = list(data.columns)
@@ -58,10 +73,16 @@ def detect_type(data):
             categ_variables.append(columns[i])
     return num_variables, categ_variables
 
-#Function to replace the missing values
+
 def replace_missing(data, num_variables, categ_variables, num_strategy = 'mean', categ_strategy = 'most_frequent'):
-    #Replacing the missing values in categorical variables and numerical variables by 2 corresponding strategies
-    #(mean for numerical variables and the most frequent value for categorical varibles for example)
+    """
+    Replacing the missing values in categorical variables and numerical variables by 2 corresponding strategies
+    (mean for numerical variables and the most frequent value for categorical varibles for example)
+    
+    Input : Dataset, numerical variables of the data, categorial variables of the data and the defined strategies
+    Output : A transformed dataset with missing values filled
+    """
+    
     ct = ColumnTransformer([("categ_imput", SimpleImputer(missing_values = np.nan, strategy = categ_strategy), categ_variables),
                         ("num_imput", SimpleImputer(missing_values = np.nan, strategy = num_strategy), num_variables)])
     data_transformed = ct.fit_transform(data) #Recuperate the transformed array
@@ -70,6 +91,13 @@ def replace_missing(data, num_variables, categ_variables, num_strategy = 'mean',
     return data_tr_table
 
 def center_encode(data, num_variables, categ_variables):
+    """
+    Centring and normalizing the data. Transforming the categorical variables.
+    
+    Input : Dataset, numerical variables of the data and categorical variables of the data.
+    Output : Transformed dataset
+    
+    """
     cat_enc = OrdinalEncoder()
     center_norm = StandardScaler()
     if categ_variables != [] and categ_variables != []:
@@ -125,7 +153,25 @@ def feature_selection(dataset,cut_off_variance=0.95,keep_features=True):
         
     return data_compressed
 
+def split_data(X, y):
+    """
+    Split the data into training set and validation set
+    
+    Input : Data and output
+    Output : Training set and validation set of the data, training set and validation set of the class
+    
+    """
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 42)
+    return X_train, X_test, y_train, y_test
+
 def determine_combinaisons(parameters):
+    """
+    Determine all possible combinaisons to have from a defined set of parameters of a model
+    
+    Input : Dictionary of parameters
+    Output : List of all combinaisons, each combinaison of parameters defined as a dictionary 
+    
+    """
     parameters_values = list(parameters.values())
     combinations = list(itertools.product(*parameters_values))
     comb_parameters = []
@@ -138,12 +184,26 @@ def determine_combinaisons(parameters):
     return comb_parameters
 
 def training(model, parameters, X, y):
+    """
+    Train the model with defined parameters and returns the cross validation score
+    
+    Input : Model, parameters of the model, data, class
+    Output : the score of the cross validation
+    
+    """
     clf = model(**parameters)
     scores = cross_val_score(clf, X, y, cv=5, scoring='f1_macro')
     score = np.mean(scores)
     return score
 
 def select_params(model, parameters, X, y):
+    """
+    Selecting the best parameters to take for the model 
+    
+    Input : Model, dictionary of possible parameters, Data, class
+    Output : Chosen combinaison of parameters, score of the cross validation with this combinaison
+    
+    """
     comb_parameters = determine_combinaisons(parameters)
     total_scores = []
     for i in range(len(comb_parameters)):
