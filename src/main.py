@@ -83,7 +83,7 @@ if __name__ == '__main__':
     model_str = args.model      # model choice
     params    = args.my_dict    # get the parameters dictionary provided by the user
     print('params',params)
-    print('Extracting data')
+    print(f'{data_str} dataset : Extracting data...')
     data = pd.read_csv(data_paths[data_str]) # Fetch the data
     print('Cleaning data')    
     data = clean_noisy_data(data,classes = 2)  # Clean the dataset
