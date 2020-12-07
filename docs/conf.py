@@ -33,7 +33,8 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
     'sphinx.ext.viewcode',
-    'sphinx_markdown_builder'
+    'sphinx_markdown_builder',
+    'recommonmark'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -56,3 +57,9 @@ html_theme = 'alabaster'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'markdown',
+    '.md': 'markdown',
+}
