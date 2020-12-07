@@ -1,3 +1,9 @@
+###########################################
+#                                         #
+#                 main.py                 #
+#                                         #
+###########################################
+
 import pandas as pd 
 import numpy as np
 from utils import *
@@ -74,8 +80,11 @@ models_dict = {'SVC':{'model':SVC, #Support vector Classifier
                                                  }
                                     }
                 }
-
-if __name__ == '__main__':
+def main():
+    """
+    @author : Yassir BENDOU
+    main function of the program
+    """
     args = parser.parse_args()  #Initiate the parser
     data_str  = args.dataset    # dataset choice
     model_str = args.model      # model choice
@@ -110,7 +119,8 @@ if __name__ == '__main__':
     score_test = test_evaluate(clf,X_test,y_test) # Run the model on test data
     print(f'F1 score on test data : {np.round(100*score_test,2)}%')
 
-    
+if __name__ == '__main__':
+    main()
     
     
     

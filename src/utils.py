@@ -1,3 +1,8 @@
+###########################################
+#                                         #
+#                utils.py                 #
+#                                         #
+###########################################
 import pandas as pd
 import numpy as np
 from sklearn.compose import ColumnTransformer
@@ -8,8 +13,9 @@ from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_sc
 import itertools
 from sklearn.metrics import f1_score
 
-def clean_noisy_data(dataset,classes = 2):
+def clean_noisy_data(dataset,classes = 2): 
     """
+    @author : Yassir BENDOU
     Clean the data with replacing the miss-filled values by the correct ones and defining the right types for the dataset
     variables.
     
@@ -41,7 +47,7 @@ def clean_noisy_data(dataset,classes = 2):
     output_is_string = False
     for c in dataset.columns : 
         try : 
-            dataset[c] = dataset[c].astype(float)
+            dataset[c] = dataset[c].astype(float) #transform numerical data that is stored as string to float type 
             numerical_columns.append(c)
         except ValueError :
             if c == output_column:
@@ -61,6 +67,7 @@ def clean_noisy_data(dataset,classes = 2):
 
 def detect_type(data):
     """
+    @author : Ilyas BENGHABRIT
     Detecting the type of the variables numerical or categorical
 
     Args: 
@@ -89,6 +96,7 @@ def detect_type(data):
 
 def replace_missing(data, num_variables, categ_variables, num_strategy = 'mean', categ_strategy = 'most_frequent'):
     """
+    @author : Ilyas BENGHABRIT
     Replacing the missing values in categorical variables and numerical variables by 2 corresponding strategies
     (mean for numerical variables and the most frequent value for categorical varibles for example)
 
@@ -122,6 +130,7 @@ def replace_missing(data, num_variables, categ_variables, num_strategy = 'mean',
 
 def center_encode(data, num_variables, categ_variables):
     """
+    @author : Ilyas BENGHABRIT
     Centring and normalizing the data. Transforming the categorical variables.
    
     Args: 
@@ -164,6 +173,7 @@ def center_encode(data, num_variables, categ_variables):
 
 def feature_selection(dataset,cut_off_variance=0.95):
     """
+    @author : Yassir BENDOU
     Applies Feature selection using PCA. We fix the number of the remaining vectors based on the number of components which garantees 95% of the original variance of the dataset.
         
     Args: 
@@ -193,6 +203,7 @@ def feature_selection(dataset,cut_off_variance=0.95):
 
 def split_data(X, y):
     """
+    @author : Hafsa OULED ATTOU
     Split the data into training set and validation set
     
     Args: 
@@ -209,6 +220,7 @@ def split_data(X, y):
 
 def determine_combinations(parameters):
     """
+    @author : Yassir BENDOU
     Determine all possible combinaisons to have from a defined set of parameters of a model
     
     Args: 
@@ -232,6 +244,7 @@ def determine_combinations(parameters):
 
 def training(model, parameters, X, y):
     """
+    @author : Hafsa OULED ATTOU
     Train the model with defined parameters and returns the cross validation score
     
     Input : Model, parameters of the model, data, class
@@ -264,6 +277,7 @@ def training(model, parameters, X, y):
 
 def select_params(model, parameters, X, y):
     """
+    @author : Ilyas BENGHABRIT
     Selecting the best parameters to take for the model 
     
     Input : Model, dictionary of possible parameters, Data, class
@@ -302,6 +316,7 @@ def select_params(model, parameters, X, y):
 
 def test_evaluate(model,X,y):
     """
+    @author : Hafsa OULED ATTOU
     Evaluate the model on test data and returns the f1 score.
     """
     y_pred = model.predict(X)
